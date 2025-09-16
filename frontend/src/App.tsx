@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, type FormEvent } from "react";
 import './App.css'
 
+interface Task {
+  id: number;
+  title: string;
+  completed: boolean;
+}
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState<Task[]>([
+    {id: 1, title: 'Contar os frangos que chegaram', completed: false},
+    {id: 2, title: 'Verificar saidas de produtos', completed: true},
+  ])
+
+  const [newTaskTitle, setNewTaskTitle] = useState<string>('');
+
+  const handleAddTask = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (newTaskTitle.trim() === '') return;
+
+    const newTask: Task = {
+      id: Date.now(),
+      title: newTaskTitle,
+      completed: false,
+    };
+
+    setTasks([...tasks, newTask]);
+    setNewTaskTitle('');
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="App">
+      <h1>TODO-LIST COM ESTEROIDE💉</h1>
+
+      <form onSubmit={handleAddTask} className="task-form">
+        <input type="text" value={newTaskTitle} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewTaskTitle(e.target.value)} placeholder="O que precisa ser feito?" />
+        <button type="submit">Adicionar</button>
+      </form>
+
+      <ul className="task-list">
+        {tasks.map(task => (
+          <li key={task.id} style={{ textDecoration: task.completed ? 'line-through' : 'none'}}>{task.title}</li>
+        ))}
+      </ul>
+    </div>
   )
+
 }
 
-export default App
+export default App;
