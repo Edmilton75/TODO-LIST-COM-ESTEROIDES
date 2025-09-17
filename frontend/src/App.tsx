@@ -29,6 +29,17 @@ function App() {
     setNewTaskTitle('');
   };
 
+
+  const handleDeleteTask = (taskIdDelete: number) => {
+    const updatedTasks = tasks.filter(task => task.id !== taskIdDelete);
+    setTasks(updatedTasks)
+  };
+
+  const handleToggleComplete = (taskIdToToggle: number) => {
+    const updatedTasks = tasks.map(task => task.id === taskIdToToggle ? { ...task, completed: !task.completed} : task)
+    setTasks(updatedTasks)
+  }
+
   return (
     <div className="App">
       <h1>TODO-LIST COM ESTEROIDE💉</h1>
@@ -40,7 +51,11 @@ function App() {
 
       <ul className="task-list">
         {tasks.map(task => (
-          <li key={task.id} style={{ textDecoration: task.completed ? 'line-through' : 'none'}}>{task.title}</li>
+          <li key={task.id} className={task.completed ? 'completed' : ''}>
+            <input type="checkbox" checked={task.completed} onChange={() => handleToggleComplete(task.id)} />
+            <span>{task.title}</span>
+            <button onClick={() => handleDeleteTask(task.id)} className="delete-button">Excluir</button>
+          </li>
         ))}
       </ul>
     </div>
