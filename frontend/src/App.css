@@ -1,16 +1,8 @@
 :root {
-  display: flex
-;
-    justify-content: center;
-    align-items
-Aligns flex items along the cross axis of the current line of the flex container.
-
-Widely available across major browsers (Baseline since March 2018)
-Learn more
-
-Don't show
-: center;
-    margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 }
 .App {
   text-align: center;
